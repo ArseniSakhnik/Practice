@@ -24,8 +24,8 @@ namespace DatabaseConnector
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Server=DESKTOP-QN9HQ65\\SQLEXPRESS;Database=practicedb;Trusted_Connection=True;");
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=practicedb;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-QN9HQ65\\SQLEXPRESS;Database=practicedb;Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=practicedb;Trusted_Connection=True;");
         }
         //DESKTOP-QN9HQ65\SQLEXPRESS
 
@@ -86,7 +86,7 @@ namespace DatabaseConnector
                 );
 
             modelBuilder.Entity<Country>().HasData(
-                new { Id = 1, CountryName = "Россия" },
+                new { Id = 1, CountryName = "Россия"},
                 new { Id = 2, CountryName = "США" }
                 );
 
@@ -96,14 +96,14 @@ namespace DatabaseConnector
                 );
 
             modelBuilder.Entity<Scientist>().HasData(
-                new { Id = 1, Name = "Дмитрий", LastName = "Менделеев" },
-                new { Id = 2, Name = "Абрахам", LastName = "Маслоу" }
+                new { Id = 1, Name = "Дмитрий", LastName = "Менделеев", CountryId = 1 },
+                new { Id = 2, Name = "Абрахам", LastName = "Маслоу", CountryId = 2 }
                 );
 
             modelBuilder.Entity<Report>().HasData(
                 new { Id = 1, ReportName = "Таблица Менделеева", Text = "Периоди́ческая система химических элементов", ReportDate = new DateTime(2022, 8, 16), IsPublished = false, ScientistId = 1 },
                 new { Id = 2, ReportName = "Мотивация и личность", Text = "Книга, несомненно, представляет интерес для читателя, особенно для приверженцев гуманистической психологии",
-                ReportDate = new DateTime(1954, 5, 21), IsPublished = true, ScientistId = 2}
+                ReportDate = new DateTime(1999, 5, 21), IsPublished = true, ScientistId = 2}
                 );
 
             modelBuilder.Entity<Organization>().HasData(
@@ -114,7 +114,7 @@ namespace DatabaseConnector
             modelBuilder.Entity<Conference>().HasData(
                 new { Id = 1, ConferenceName = "Конференция о таблице Менделеева", ConferenceDescription = "Конференция об открытии таблицы Менделеева", StartOfConference = new DateTime(2024, 3, 12),
                 LocationId = 1},
-                new { Id = 2, ConferenceName = "Конференция о психологии", ConferenceDescription = "Дебаты о психологии", StartOfConference = new DateTime(1956, 7, 9), LocationId = 2}
+                new { Id = 2, ConferenceName = "Конференция о психологии", ConferenceDescription = "Дебаты о психологии", StartOfConference = new DateTime(1954, 7, 9), LocationId = 2}
                 );
 
             modelBuilder.Entity<ScientistConference>().HasData(

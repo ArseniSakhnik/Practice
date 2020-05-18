@@ -16,6 +16,7 @@ namespace Models
         public List<ScientistOrganization> ScientistOrganization { get; set; } 
         public List<Report> Reports { get; set; }
         public List<ScientistConference> ScientistConference { get; set; } 
+        public Country Country { get; set; }
 
         public Scientist()
         {

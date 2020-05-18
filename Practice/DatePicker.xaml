@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Practice"
         mc:Ignorable="d"
-        Title="DatePicker" Height="450" Width="800">
+        Title="DatePicker" Height="180" Width="180">
     <Grid>
         <Calendar x:Name="calendar1" FirstDayOfWeek="Monday" SelectionMode="MultipleRange"
         xmlns:sys="clr-namespace:System;assembly=mscorlib" SelectedDatesChanged="calendar1_SelectedDatesChanged">

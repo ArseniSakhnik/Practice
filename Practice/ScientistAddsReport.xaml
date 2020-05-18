@@ -11,9 +11,15 @@
             <RowDefinition Height="163*"></RowDefinition>
             <RowDefinition Height="21*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" x:Name="dataGrid" Margin="0,0,0,35" ItemsSource="{Binding Reports}" SelectedItem="{Binding SelectedReport}"/>
+        <DataGrid Grid.Row="0" x:Name="dataGrid" Margin="0,0,0,35" ItemsSource="{Binding Reports}" SelectedItem="{Binding SelectedReport}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название доклада" Binding="{Binding ReportName}"/>
+                <DataGridTextColumn Header="Ученый" Binding="{Binding ScientistName}"/>
+                <DataGridTextColumn Header="Время написания" Binding="{Binding ReportDate}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Grid Grid.Row="1">
-            <Button Content="Добавить ученого" Command="{Binding AddReportCommand}" Margin="392,1,0,0"/>
+            <Button Content="Добавить доклад" Command="{Binding AddReportCommand}" Margin="392,1,0,0"/>
         </Grid>
     </Grid>
 </Window>

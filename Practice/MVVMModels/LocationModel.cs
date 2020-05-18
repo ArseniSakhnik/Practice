@@ -50,7 +50,6 @@ namespace Practice.MVVMModels
             get => Location.Country;
             set
             {
-                Console.WriteLine("Привязываем свойство объекта");
                 this.Location.Country = value;
                 LocationService.ChangeLocation(this.Location, this.StartedName);
                 OnPropertyChanged("Country");

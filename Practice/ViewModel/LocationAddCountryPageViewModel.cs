@@ -37,7 +37,6 @@ namespace Practice.ViewModel
                 return addCountry ??
                     (addCountry = new RelayCommand(obj =>
                     {
-                        Console.WriteLine("Пытаемся добавить");
                         SelectedLocation.Country = SelectedCountry.Country;
                         window.Close();
                     },

@@ -10,7 +10,7 @@
         <Grid.ColumnDefinitions>
         </Grid.ColumnDefinitions>
         <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="782" Grid.ColumnSpan="3" SelectionChanged="tabControl_SelectionChanged">
-            <TabItem Header="Доклады" MouseDown="TabReport_MouseDown">
+            <TabItem Header="Доклады" Name="ReportTab">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -54,50 +54,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Пользователи" MouseDown="TabUser_MouseDown">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="0.8*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBox x:Name="UserFinder" Text="" >
-                        <TextBox.InputBindings>
-                            <KeyBinding Command="{Binding Path=FindUserCommand}" CommandParameter="{Binding Text, ElementName=UserFinder}" Key="Enter"/>
-                        </TextBox.InputBindings>
-                    </TextBox>
-                    <ListBox Grid.Column="0" ItemsSource="{Binding Users}"
-                 SelectedItem="{Binding SelectedUser}" Margin="0,20,0,0">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="5">
-                                    <TextBlock FontSize="18" Text="{Binding Path=UserName}" />
-                                    <TextBlock Text="{Binding Path=Login}"/>
-                                    <TextBlock Text="{Binding Path=RoleName}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-
-                    <StackPanel Grid.Column="1" DataContext="{Binding SelectedUser}">
-                        <TextBlock Text="Выбранный элемент"  />
-                        <TextBlock Text="Имя пользователя" />
-                        <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Text="Логин" />
-                        <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Text="Пароль" />
-                        <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock Text="Роль"/>
-                        <TextBox Text="{Binding RoleName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="431,177,0,138" Grid.ColumnSpan="2">
-                        <Button x:Name="UserAdd" Content="Добавить запись" Command="{Binding AddConferenceCommand}" Width="110"/>
-                        <Button x:Name="UserDelete" Content="Удалить" Command="{Binding RemoveConferenceCommand}" CommandParameter="{Binding SelectedConference}" Width="110"/>
-                        <Button Content="Изменить роль" Command="{Binding ChangeRoleCommand}" Width="110"/>
-                        <!--<Button x:Name="ConferenceAddCountry" Content="Добавить или изменить страну" Width="180" Command="{Binding ScientistAddCountry}"/>-->
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Организации" MouseDown="TabOrganization_MouseDown">
+            <TabItem Header="Организации" Name="OrganizationTab">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -141,17 +98,18 @@
 
                     <StackPanel Orientation="Vertical" Margin="431,166,0,138" Grid.ColumnSpan="2">
                         <Button x:Name="OrganizationAdd" Content="Добавить организацию" Command="{Binding AddOrganizationCommand}" Width="110"/>
-                        <Button x:Name="OrganizationDelete" Content="Удалить" Command="{Binding RemoveScientistCommand}" CommandParameter="{Binding SelectedScientist}" Width="110"/>
+                        <Button x:Name="OrganizationDelete" Content="Удалить" Command="{Binding RemoveOrganizationCommand}" CommandParameter="{Binding SelectedOrganization}" Width="110"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Конференции" MouseDown="TabConference_MouseDown">
+            <TabItem Header="Конференции" Name="ConferenceTab">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="0.8*" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="ConferenceFinder" Text="" >
+                    <CheckBox IsChecked="{Binding IsPublished}"/>
+                    <TextBox x:Name="ConferenceFinder" Text="">
                         <TextBox.InputBindings>
                             <KeyBinding Command="{Binding Path=FindConferenceCommand}" CommandParameter="{Binding Text, ElementName=ConferenceFinder}" Key="Enter"/>
                         </TextBox.InputBindings>
@@ -163,11 +121,11 @@
                                 <StackPanel Margin="5">
                                     <TextBlock FontSize="18" Text="{Binding Path=ConferenceName}" />
                                     <TextBlock Text="{Binding Path=ConferenceDescription}"/>
+                                    <TextBlock Text="{Binding Path=NumberOfCountries}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-
 
                     <StackPanel Grid.Column="1" DataContext="{Binding SelectedConference}">
                         <TextBlock Text="Выбранный элемент"  />
@@ -177,9 +135,10 @@
                         <TextBox Text="{Binding ConferenceDescription, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock Text="Время проведения" />
                         <TextBox Text="{Binding StartOfConference, StringFormat=dd-MM-yyyy, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+
                         <TextBlock Text="Место проведения"/>
                         <TextBox Text="{Binding LocationName, UpdateSourceTrigger=PropertyChanged}"/>
-                        
+
                         <TextBlock Text="Ученые, участвующие в конференции"/>
 
                         <ListBox ItemsSource="{Binding Scientists}" Height="100" SelectedItem="{Binding SelectedScientist}">
@@ -193,7 +152,11 @@
                         </ListBox>
                     </StackPanel>
 
-                    <StackPanel Margin="304,169,0,180" Grid.Column="1">
+                    <StackPanel Margin="236,99,0,273" Grid.Column="1">
+                        <Button Content="Изменить" Width="110" Command="{Binding DatePickerCommand}" Height="19"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="305,169,-10,180" Grid.Column="1">
                         <Button Content="+" Width="30" Command="{Binding AddScientistCommand}" />
                         <Button Content="-" Width="30" Command="{Binding RemoveScientistCommand}"/>
                     </StackPanel>
@@ -202,20 +165,24 @@
                         <Button Content="Изменить" Height="18" Command="{Binding ChangeLocationCommand}"/>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Margin="431,296,0,10" Grid.ColumnSpan="2">
+                    <StackPanel Orientation="Vertical" Margin="431,267,0,7" Grid.ColumnSpan="2">
                         <Button x:Name="ConferenceAdd" Content="Добавить запись" Command="{Binding AddConferenceCommand}" Width="110"/>
                         <Button x:Name="ConferenceDelete" Content="Удалить" Command="{Binding RemoveConferenceCommand}" CommandParameter="{Binding SelectedConference}" Width="110"/>
                         <!--<Button x:Name="ConferenceAddCountry" Content="Добавить или изменить страну" Width="180" Command="{Binding ScientistAddCountry}"/>-->
+                        <Label Content="Конференции, без опубликованных  материалов" Width="282" Margin="0,0, 66, 0"/>
+                        <CheckBox IsChecked="False" Command="{Binding ConferencesWithoutPublishedMaterialsCommand}" CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Width="16" Margin="230,-20,0,0"/>
+                        <Label Content="Сортировать по количеству ученых" Width="282" Margin="0,0, 66, 0"/>
+                        <CheckBox IsChecked="False" Command="{Binding SortByScientistCommand}" CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Width="16" Margin="230,-20,0,0"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Научные сотрудники" MouseDown="ScientistTab_MouseDown">
+            <TabItem Name="ScientistTab" Header="Научные сотрудники">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="0.8*" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="ScientistFinder" Text="" >
+                    <TextBox x:Name="ScientistFinder" Text="">
                         <TextBox.InputBindings>
                             <KeyBinding Command="{Binding Path=FindScientistCommand}" CommandParameter="{Binding Text, ElementName=ScientistFinder}" Key="Enter"/>
                         </TextBox.InputBindings>
@@ -226,6 +193,8 @@
                             <DataTemplate>
                                 <StackPanel Margin="5">
                                     <TextBlock FontSize="18" Text="{Binding Path=ScientistFullName}" />
+                                    <TextBlock FontSize="12" Text="{Binding Path=ReportsCount}"/>
+                                    <TextBlock FontSize="12" Text="{Binding Path=ScientistCountry}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -238,6 +207,11 @@
                         <TextBlock Text="Фамилия" />
                         <TextBox Text="{Binding ScientistLastName, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock Text="Доклады"/>
+                        <TextBox x:Name="ReportFinderByYear" Text="">
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding Path=ReportFindeByYearCommand}" CommandParameter="{Binding Text, ElementName=ReportFinderByYear}" Key="Enter"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
                         <ListBox ItemsSource="{Binding Reports}" Height="60" SelectedItem="{Binding SelectedReport}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
@@ -268,7 +242,7 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
-                    <StackPanel Margin="315,101,0,249" Grid.Column="1">
+                    <StackPanel Margin="315,118,0,229" Grid.Column="1">
                         <Button Content="+" Width="30" Command="{Binding AddReportCommand}" />
                         <Button Content="-" Width="30" Command="{Binding RemoveReportCommand}"/>
                     </StackPanel>
@@ -280,8 +254,8 @@
                         <Button Content="+" Width="30" Command="{Binding AddConferenceCommand}" />
                         <Button Content="-" Width="30" Command="{Binding RemoveConferenceCommand}"/>
                     </StackPanel>
-                    
-                    
+
+
                     <StackPanel Orientation="Vertical" Margin="431,330,0,0" Grid.ColumnSpan="2">
                         <Button x:Name="ScientistAdd" Content="Добавить запись" Command="{Binding AddScientistCommand}" Width="110"/>
                         <Button x:Name="ScientistDelete" Content="Удалить" Command="{Binding RemoveScientistCommand}" CommandParameter="{Binding SelectedScientist}" Width="110"/>
@@ -289,7 +263,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Места проведения" Name="LocationTab" MouseDown="LocationTab_MouseDown" >
+            <TabItem Header="Места проведения" Name="LocationTab" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -338,7 +312,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Name="CountryTab" Header="Страны" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="53" MouseDown="CountryTab_MouseDown">
+            <TabItem Name="CountryTab" Header="Страны" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="53">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="431*" />
@@ -369,10 +343,65 @@
                         <TextBlock Text="Страна" />
                         <TextBox Name="CountryTextBlock" Text="{Binding CountryName, UpdateSourceTrigger=PropertyChanged}" MinLines="1" />
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="0,49,0,288" Grid.ColumnSpan="2" Grid.Column="1">
+                    <StackPanel Orientation="Vertical" Margin="0,49,0,274" Grid.ColumnSpan="2" Grid.Column="1">
                         <Button x:Name="CountryAdd" Content="Добавить запись" Command="{Binding AddCountryCommand}" Width="110"/>
                         <Button x:Name="CountryDelete" Content="Удалить" Command="{Binding RemoveCountryCommand}" CommandParameter="{Binding SelectedCountry}" Width="110"/>
+                        <Button Content="Добавить ученого" Command="{Binding AddScientistCommand}" Width="110"/>
                     </StackPanel>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Пользователи" Name="UserTab">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="0.8*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="UserFinder" Text="" >
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding Path=FindUserCommand}" CommandParameter="{Binding Text, ElementName=UserFinder}" Key="Enter"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <ListBox Grid.Column="0" ItemsSource="{Binding Users}"
+                 SelectedItem="{Binding SelectedUser}" Margin="0,20,0,0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="5">
+                                    <TextBlock FontSize="18" Text="{Binding Path=UserName}" />
+                                    <TextBlock Text="{Binding Path=Login}"/>
+                                    <TextBlock Text="{Binding Path=RoleName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <StackPanel Grid.Column="1" DataContext="{Binding SelectedUser}">
+                        <TextBlock Text="Выбранный элемент"  />
+                        <TextBlock Text="Имя пользователя" />
+                        <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Логин" />
+                        <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Пароль" />
+                        <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Роль"/>
+                        <TextBox Text="{Binding RoleName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="431,177,0,138" Grid.ColumnSpan="2">
+                        <Button x:Name="UserAdd" Content="Добавить запись" Command="{Binding AddConferenceCommand}" Width="110"/>
+                        <Button x:Name="UserDelete" Content="Удалить" Command="{Binding RemoveConferenceCommand}" CommandParameter="{Binding SelectedConference}" Width="110"/>
+                        <Button Content="Изменить роль" Command="{Binding ChangeRoleCommand}" Width="110"/>
+                        <!--<Button x:Name="ConferenceAddCountry" Content="Добавить или изменить страну" Width="180" Command="{Binding ScientistAddCountry}"/>-->
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Отчеты" Name="WordReportTab">
+                <Grid Margin="673,0,-1,0" Height="30">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Column="0" Content="Создать отчет" Command="{Binding MakeAReportCommand}"/>
+                    <Label Content="Примичание" Margin="-653,-144,120,150"/>
+                    <TextBox Text="{Binding Note}" TextWrapping="Wrap" Margin="-653,-120,120,-172" />
                 </Grid>
 
             </TabItem>

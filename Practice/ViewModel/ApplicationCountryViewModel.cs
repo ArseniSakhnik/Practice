@@ -40,7 +40,6 @@ namespace Practice.ViewModel
                             IEnumerable<CountryModel> a = (from c in Countries where c.CountryName.Length == 0 select c);
                             if (a.Count() > 0)
                             {
-                                Console.WriteLine("Заполните  пропуски");
                                 return false;
                             }
                             else
@@ -56,7 +55,6 @@ namespace Practice.ViewModel
         {
             get
             {
-                Console.WriteLine("Попытка удаления");
                 return removeCountryCommand ??
                   (removeCountryCommand = new RelayCommand(obj =>
                   {
@@ -66,7 +64,7 @@ namespace Practice.ViewModel
                           Countries.Remove(cm);
                       }
                   },
-                  (obj) => Countries.Count > 0));
+                  (obj) => selectedCountry != null));
             }
         }
         private RelayCommand findCommand;
@@ -74,13 +72,11 @@ namespace Practice.ViewModel
         {
             get
             {
-                Console.WriteLine("Попытаемся найти");
                 return findCommand ??
                     (findCommand = new RelayCommand(obj =>
                     {
                         if (obj != null && obj.ToString().Length > 0)
                         {
-                            Console.WriteLine(obj.GetType() + " " + obj);
                             Countries = new ObservableCollection<CountryModel>(Countries.OrderByDescending(i => i.CountryName.Contains(obj.ToString())));
                             OnPropertyChanged("Countries");
                         }
@@ -103,8 +99,23 @@ namespace Practice.ViewModel
             {
                 selectedCountry = value;
                 selectedCountryName = selectedCountry.CountryName;
-                Console.WriteLine(selectedCountryName);
                 OnPropertyChanged("SelectedCountry");
+            }
+        }
+
+        private RelayCommand addScientistCommand;
+
+        public RelayCommand AddScientistCommand
+        {
+            get
+            {
+                return addScientistCommand ??
+                    (addScientistCommand = new RelayCommand(obj =>
+                    {
+                        CounrtyAddsScientist counrtyAddsScientist = new CounrtyAddsScientist(selectedCountry);
+                        counrtyAddsScientist.Show();
+                    },
+                    obj => selectedCountry != null));
             }
         }
         public ApplicationCountryViewModel()
@@ -124,7 +135,6 @@ namespace Practice.ViewModel
                         countryModel = cm;
 
                     CountryService.AddCountry(countryModel.Country);
-                    Console.WriteLine("Добавили элемент " + countryModel?.CountryName);
                 }
                 else if (e.Action.ToString().Equals("Remove"))
                 {
@@ -133,16 +143,7 @@ namespace Practice.ViewModel
                         countryModel = cm;
 
                     CountryService.RemoveCountry(countryModel.Country);
-                    Console.WriteLine("Удаление элемента " + countryModel?.CountryName);
                 }
-                //else if (e.Action.ToString().Equals("Replace"))
-                //{
-                //    CountryModel countryModel = null;
-                //    foreach (CountryModel cm in e.OldItems)
-                //        countryModel = cm;
-
-                //    Console.WriteLine("Изменения элемента " + countryModel?.CountryName);
-                //}
                 OnPropertyChanged("Countries");
             };
         }

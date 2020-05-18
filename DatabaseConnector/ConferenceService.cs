@@ -16,7 +16,7 @@ namespace DatabaseConnector
             {
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    conferences = (from c in db.Conferences select c).Include(c => c.Location).ToList();
+                    conferences = (from c in db.Conferences select c).Include(c => c.ScientistConference).Include(c => c.Location).ThenInclude(l => l.Country).ToList();
                 }
             }
             catch(Exception ex)
@@ -137,5 +137,62 @@ namespace DatabaseConnector
                 Console.WriteLine(ex.Message);
             }
         }
+
+        public static List<Conference> GetUnpublishedConferences()
+        {
+            List<Conference> conferencesWithoutPublishedReports = new List<Conference>();
+            try
+            {
+                using(ApplicationContext db = new ApplicationContext())
+                {
+                    List<Conference> conferences = (from c in db.Conferences select c).Include(c => c.ScientistConference).ToList();
+                    
+                    foreach(Conference c in conferences)
+                    {
+                        List<Scientist> scientistsOnConference = new List<Scientist>();
+                        foreach (ScientistConference sc in c.ScientistConference)
+                        {
+                            Scientist scientist = (from s in db.Scientists where s.Id == sc.ScientistId select s).Include(c => c.Reports).First();
+                            scientistsOnConference.Add(scientist);
+                        }
+                        if (scientistsOnConference.All(s => s.Reports.All(r => r.IsPublished == false)))
+                        {
+                            conferencesWithoutPublishedReports.Add(c);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            return conferencesWithoutPublishedReports;
+        }
+
+        public static List<Country> GetCountriesOnConference(Conference conference)
+        {
+            List<Country> countriesOnConference = new List<Country>();
+            try
+            {
+                using(ApplicationContext db = new ApplicationContext())
+                {
+                    Conference con = (from c in db.Conferences where c.Id == conference.Id select c).Include(c => c.ScientistConference).First();
+                    foreach(ScientistConference sc in con.ScientistConference)
+                    {
+                        Scientist scientist = (from s in db.Scientists where s.Id == sc.ScientistId select s).Include(s => s.Country).First();
+                        if (countriesOnConference.All(coc => coc.CountryName == scientist.Country.CountryName))
+                            countriesOnConference.Add(scientist.Country);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            return countriesOnConference;
+        }
+
     }
 }

@@ -58,7 +58,6 @@ namespace Practice.ViewModel
                             IEnumerable<ConferenceModel> a = (from c in Conferences where c.ConferenceName.Length == 0 select c);
                             if (a.Count() > 0)
                             {
-                                Console.WriteLine("Заполните  пропуски");
                                 return false;
                             }
                             else
@@ -83,7 +82,7 @@ namespace Practice.ViewModel
                         if (cm != null)
                             Conferences.Remove(cm);
                     },
-                    (obj) => Conferences.Count > 0));
+                    (obj) => selectedConference != null));
             }
         }
 
@@ -110,7 +109,6 @@ namespace Practice.ViewModel
                     {
                         if (obj != null && obj.ToString().Length > 0)
                         {
-                            Console.WriteLine(obj.GetType() + " " + obj);
                             Conferences = new ObservableCollection<ConferenceModel>(Conferences.OrderByDescending(c => c.ConferenceName.Contains(obj.ToString())));
                             OnPropertyChanged("Conferences");
                         }
@@ -169,7 +167,6 @@ namespace Practice.ViewModel
                         conferenceModel = cm;
 
                     ConferenceService.AddConference(conferenceModel.Conference);
-                    Console.WriteLine("Добавили элемент " + conferenceModel?.ConferenceName);
                 }
                 else if (e.Action.ToString().Equals("Remove"))
                 {
@@ -178,10 +175,84 @@ namespace Practice.ViewModel
                         conferenceModel = cm;
 
                     ConferenceService.RemoveConference(conferenceModel.Conference);
-                    Console.WriteLine("Удаление элемента " + conferenceModel?.ConferenceName);
                 }
                 OnPropertyChanged("Conferences");
             };
+
         }
+
+        private RelayCommand conferencesWithoutPublishedMaterialsCommand;
+
+        public RelayCommand ConferencesWithoutPublishedMaterialsCommand
+        {
+            get
+            {
+                return conferencesWithoutPublishedMaterialsCommand ??
+                    (conferencesWithoutPublishedMaterialsCommand = new RelayCommand(obj =>
+                    {
+                        bool IsChecked = Convert.ToBoolean(obj);
+                        if (IsChecked)
+                        {
+                            List<Conference> conferences = ConferenceService.GetUnpublishedConferences();
+                            Conferences = new ObservableCollection<ConferenceModel>();
+                            foreach(Conference c in conferences)
+                                Conferences.Add(new ConferenceModel(c));
+                            OnPropertyChanged("Conferences");
+                        }
+                        else
+                        {
+                            List<Conference> conferences = ConferenceService.GetConferences();
+                            Conferences = new ObservableCollection<ConferenceModel>();
+                            foreach (Conference c in conferences)
+                                Conferences.Add(new ConferenceModel(c));
+                            OnPropertyChanged("Conferences");
+                        }
+
+                    }));
+            }
+        }
+
+        private RelayCommand sortByScientistsCommand;
+
+        public RelayCommand SortByScientistCommand
+        {
+            get
+            {
+                return sortByScientistsCommand ??
+                    (sortByScientistsCommand = new RelayCommand(obj =>
+                    {
+                        bool IsChecked = Convert.ToBoolean(obj);
+                        if (IsChecked)
+                        {
+                            Conferences = new ObservableCollection<ConferenceModel>(Conferences.OrderByDescending(c => c.Conference.ScientistConference.Count));
+                            OnPropertyChanged("Conferences");
+                        }
+                        else
+                        {
+                            Conferences = new ObservableCollection<ConferenceModel>(Conferences.OrderByDescending(c => c.ConferenceName));
+                            OnPropertyChanged("Conferences");
+                        }
+                    }));
+            }
+        }
+
+        private RelayCommand datePickerCommand;
+
+        public RelayCommand DatePickerCommand
+        {
+            get
+            {
+                return datePickerCommand ??
+                    (datePickerCommand = new RelayCommand(obj =>
+                    {
+                        DatePicker datePicker = new DatePicker(null, selectedConference);
+                        datePicker.Show();
+                    },
+                    (obj) => selectedConference != null));
+            }
+        }
+
+
+
     }
 }

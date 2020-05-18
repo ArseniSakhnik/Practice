@@ -78,7 +78,8 @@ namespace Practice.MVVMModels
             get => Conference.StartOfConference;
             set
             {
-                StartOfConference = value;
+                Conference.StartOfConference = value;
+                ConferenceService.ChangeConference(Conference);
                 OnPropertyChanged("StartOfConference");
             }
         }
@@ -99,6 +100,26 @@ namespace Practice.MVVMModels
                 OnPropertyChanged("LocationName");
             }
         }
+
+        public string CountryName
+        {
+            get => Conference.Location.Country.CountryName;
+            set { }
+        }
+
+        public int NumberOfCountries
+        {
+            get
+            {
+                return ConferenceService.GetCountriesOnConference(Conference).Count;
+            }
+            set
+            {
+
+            }
+        }
+
+        
 
 
 

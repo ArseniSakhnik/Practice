@@ -21,6 +21,7 @@ namespace Practice
         public Authorization()
         {
             InitializeComponent();
+            
             DataContext = new AuthorizationViewModel(this);
         }
 

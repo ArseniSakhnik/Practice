@@ -24,6 +24,9 @@ namespace Practice.ViewModel
             List<Conference> conferences = ConferenceService.GetConferences();
             foreach (Conference c in conferences)
                 Conferences.Add(new ConferenceModel(c));
+
+            
+
         }
 
         private RelayCommand addConferenceCommand;

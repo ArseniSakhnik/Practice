@@ -19,18 +19,29 @@ namespace Practice.ViewModel
     /// </summary>
     public partial class DatePicker : Window
     {
-        private ReportModel SelectedReport { get; set; }
-        public DatePicker(ReportModel selectedReport)
+        private ReportModel SelectedReport { get; set; } 
+
+        private ConferenceModel SelectedConference { get; set; }
+        public DatePicker(ReportModel selectedReport = null, ConferenceModel selectedConference = null)
         {
             InitializeComponent();
             SelectedReport = selectedReport;
+            SelectedConference = selectedConference;
         }
 
         private void calendar1_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
             DateTime? selectedDate = calendar1.SelectedDate;
-            SelectedReport.ReportDate = (DateTime)selectedDate;
-            SelectedReport.OnPropertyChanged("ReportDate");
+            if (SelectedReport != null)
+            {
+                SelectedReport.ReportDate = (DateTime)selectedDate;
+                SelectedReport.OnPropertyChanged("ReportDate");
+            }
+            else if (SelectedConference != null)
+            {
+                SelectedConference.StartOfConference = (DateTime)selectedDate;
+                SelectedConference.OnPropertyChanged("StartOfConference");
+            }
             this.Close();
         }
 

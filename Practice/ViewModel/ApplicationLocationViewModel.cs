@@ -27,7 +27,6 @@ namespace Practice.ViewModel
         {
             get
             {
-                Console.WriteLine("Пытаемся найти локацию");
                 return addLocationCommand ??
                     (addLocationCommand = new RelayCommand(obj =>
                     {
@@ -48,7 +47,6 @@ namespace Practice.ViewModel
                             IEnumerable<LocationModel> a = (from l in Locations where l.LocationName.Length == 0 select l);
                             if (a.Count() > 0)
                             {
-                                Console.WriteLine("Заполните  пропуски");
                                 return false;
                             }
                             else
@@ -64,7 +62,6 @@ namespace Practice.ViewModel
         {
             get
             {
-                Console.WriteLine("Удаляем локацию ");
                 return removeLocationCommand ??
                     (removeLocationCommand = new RelayCommand(obj =>
                     {
@@ -74,7 +71,7 @@ namespace Practice.ViewModel
                             Locations.Remove(lm);
                         }
                     },
-                    (obj) => Locations.Count > 0));
+                    (obj) => selectedLocation != null));
             }
         }
 
@@ -83,13 +80,11 @@ namespace Practice.ViewModel
         {
             get
             {
-                Console.WriteLine("Пытаемся найти локацию ");
                 return findLocationCommand ??
                     (findLocationCommand = new RelayCommand(obj =>
                     {
                         if (obj != null && obj.ToString().Length > 0)
                         {
-                            Console.WriteLine(obj.GetType() + " " + obj);
                             Locations = new ObservableCollection<LocationModel>(Locations.OrderByDescending(i => i.LocationName.Contains(obj.ToString())));
                             OnPropertyChanged("Locations");
                         }
@@ -129,7 +124,6 @@ namespace Practice.ViewModel
             {
                 selectedLocation = value;
                 SelectedLocationName = selectedLocation.LocationName;
-                Console.WriteLine(SelectedLocationName);
                 OnPropertyChanged("SelectedLocation");
             }
         }
@@ -150,7 +144,6 @@ namespace Practice.ViewModel
                         locationModel = lm;
 
                     LocationService.AddLocation(locationModel.Location);
-                    Console.WriteLine("Добавили элемент " + locationModel?.LocationName);
                 }
                 else if (e.Action.ToString().Equals("Remove"))
                 {
@@ -159,7 +152,6 @@ namespace Practice.ViewModel
                         locationModel = lm;
 
                     LocationService.RemoveLocation(locationModel.Location);
-                    Console.WriteLine("Удаление элемента " + locationModel?.LocationName);
                 }
                 OnPropertyChanged("Locations");
             };

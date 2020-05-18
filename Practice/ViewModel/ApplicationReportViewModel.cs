@@ -56,7 +56,6 @@ namespace Practice.ViewModel
                             IEnumerable<ReportModel> a = (from c in Reports where c.ReportName.Length == 0 select c);
                             if (a.Count() > 0)
                             {
-                                Console.WriteLine("Заполните  пропуски");
                                 return false;
                             }
                             else
@@ -80,7 +79,7 @@ namespace Practice.ViewModel
                         if (cm != null)
                             Reports.Remove(cm);
                     },
-                    (obj) => Reports.Count > 0));
+                    (obj) => selectedReport != null));
             }
         }
 
@@ -95,7 +94,6 @@ namespace Practice.ViewModel
                     {
                         if (obj != null && obj.ToString().Length > 0)
                         {
-                            Console.WriteLine(obj.GetType() + " " + obj);
                             Reports = new ObservableCollection<ReportModel>(Reports.OrderByDescending(c => c.ReportName.Contains(obj.ToString())));
                             OnPropertyChanged("Reports");
                         }
@@ -139,7 +137,6 @@ namespace Practice.ViewModel
                         reportModel = rm;
 
                     ReportService.AddReport(reportModel.Report);
-                    Console.WriteLine("Добавили элемент " + reportModel?.ReportName);
                 }
                 else if (e.Action.ToString().Equals("Remove"))
                 {
@@ -148,7 +145,6 @@ namespace Practice.ViewModel
                         reportModel = rm;
 
                     ReportService.RemoveReport(reportModel.Report);
-                    Console.WriteLine("Удаление элемента " + reportModel?.ReportName);
                 }
                 OnPropertyChanged("Reports");
             };

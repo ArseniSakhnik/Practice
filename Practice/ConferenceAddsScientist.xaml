@@ -11,7 +11,12 @@
             <RowDefinition Height="163*"></RowDefinition>
             <RowDefinition Height="21*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" x:Name="dataGrid" Margin="0,0,0,35" ItemsSource="{Binding Scientists}" SelectedItem="{Binding SelectedScientist}"/>
+        <DataGrid Grid.Row="0" x:Name="dataGrid" Margin="0,0,0,35" ItemsSource="{Binding Scientists}" SelectedItem="{Binding SelectedScientist}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя" Binding="{Binding ScientistFullName}"/>
+                <DataGridTextColumn Header="Страна" Binding="{Binding ScientistCountry}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Grid Grid.Row="1">
             <Button Content="Добавить ученого" Command="{Binding AddScientistCommand}" Margin="392,1,0,0"/>
         </Grid>

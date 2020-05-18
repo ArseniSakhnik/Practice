@@ -60,7 +60,6 @@ namespace Practice.ViewModel
                             IEnumerable<UserModel> a = (from u in Users where u.UserName.Length == 0 select u);
                             if (a.Count() > 0)
                             {
-                                Console.WriteLine("Заполните  пропуски");
                                 return false;
                             }
                             else
@@ -84,7 +83,7 @@ namespace Practice.ViewModel
                         if (um != null)
                             Users.Remove(um);
                     },
-                    (obj) => Users.Count > 0));
+                    (obj) => selectedUser != null));
             }
         }
 
@@ -113,7 +112,6 @@ namespace Practice.ViewModel
                     {
                         if (obj != null && obj.ToString().Length > 0)
                         {
-                            Console.WriteLine(obj.GetType() + " " + obj);
                             Users = new ObservableCollection<UserModel>(Users.OrderByDescending(u => u.UserName.Contains(obj.ToString())));
                             OnPropertyChanged("Users");
                         }
@@ -140,7 +138,6 @@ namespace Practice.ViewModel
                         userModel = um;
 
                     UserService.AddUser(userModel.User);
-                    Console.WriteLine("Добавили элемент " + userModel?.UserName);
                 }
                 else if (e.Action.ToString().Equals("Remove"))
                 {
@@ -149,7 +146,6 @@ namespace Practice.ViewModel
                         userModel = um;
 
                     UserService.RemoveUser(userModel.User);
-                    Console.WriteLine("Удаление элемента " + userModel?.UserName);
                 }
                 OnPropertyChanged("Users");
             };

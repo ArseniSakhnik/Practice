@@ -49,7 +49,7 @@ namespace Practice.ViewModel
                     (addOrganizationCommand = new RelayCommand(obj =>
                     {
                         Organization organization = new Organization { OrganizationName = "Название организации " + (Organizations.Count + 1) };
-                        OrganizationModel om = new OrganizationModel(organization);
+                        OrganizationModel om = new OrganizationModel(organization, false);
                         OrganizationService.AddOrganization(organization);
                         Organizations.Insert(0, om);
                         selectedOrganization = om;
@@ -61,7 +61,6 @@ namespace Practice.ViewModel
                             IEnumerable<OrganizationModel> a = (from c in Organizations where c.OrganizationName.Length == 0 select c);
                             if (a.Count() > 0)
                             {
-                                Console.WriteLine("Заполните  пропуски");
                                 return false;
                             }
                             else
@@ -84,7 +83,7 @@ namespace Practice.ViewModel
                         if (om != null)
                             Organizations.Remove(om);
                     },
-                    (obj) => Organizations.Count > 0));
+                    (obj) => selectedOrganization != null));
             }
         }
 
@@ -98,7 +97,6 @@ namespace Practice.ViewModel
                     {
                         if (obj != null && obj.ToString().Length > 0)
                         {
-                            Console.WriteLine(obj.GetType() + " " + obj);
                             Organizations = new ObservableCollection<OrganizationModel>(Organizations.OrderByDescending(c => c.OrganizationName.Contains(obj.ToString())));
                             OnPropertyChanged("Conferences");
                         }
@@ -155,16 +153,14 @@ namespace Practice.ViewModel
                         organizationModel = om;
 
                     OrganizationService.AddOrganization(organizationModel.Organization);
-                    Console.WriteLine("Добавили элемент " + organizationModel?.OrganizationName);
                 }
                 else if (e.Action.ToString().Equals("Remove"))
                 {
                     OrganizationModel organizationModel = null;
-                    foreach (OrganizationModel om in e.OldItems)
+                    foreach (OrganizationModel om in e.OldItems)    
                         organizationModel = om;
 
                     OrganizationService.RemoveOrganization(organizationModel.Organization);
-                    Console.WriteLine("Удаление элемента " + organizationModel?.OrganizationName);
                 }
                 OnPropertyChanged("Organizations");
             };

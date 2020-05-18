@@ -26,9 +26,23 @@ namespace Practice.ViewModel
             set
             {
                 selectedScientist = value;
+                ReportsCount = "Доклады (" + (selectedScientist.Reports.Count + 1) + "):";
                 OnPropertyChanged("SelectedScientist");
             }
         }
+
+        public string reportsCount = "Доклады";
+
+        public string ReportsCount
+        {
+            get => reportsCount;
+            set
+            {
+                reportsCount = value;
+                OnPropertyChanged("ReportsCount");
+            }
+        }
+
         public ObservableCollection<ScientistModel> Scientists { get; set; } = new ObservableCollection<ScientistModel>();
 
         private RelayCommand addScientistCommand;
@@ -46,7 +60,7 @@ namespace Practice.ViewModel
                             LastName = "Фамилия ученого " + (Scientists.Count() + 1)
                         };
 
-                        ScientistModel sc = new ScientistModel(scientist);
+                        ScientistModel sc = new ScientistModel(scientist, false);
                         ScientistService.AddScientist(scientist);
                         Scientists.Insert(0, sc);
                         selectedScientist = sc;
@@ -58,7 +72,6 @@ namespace Practice.ViewModel
                             IEnumerable<ScientistModel> a = (from s in Scientists where s.ScientistName.Length == 0 select s);
                             if (a.Count() > 0)
                             {
-                                Console.WriteLine("Заполните  пропуски");
                                 return false;
                             }
                             else
@@ -75,7 +88,6 @@ namespace Practice.ViewModel
         {
             get
             {
-                Console.WriteLine("Удаляем ученого");
                 return removeScientistCommand ??
                     (removeScientistCommand = new RelayCommand((obj) =>
                     {
@@ -100,7 +112,6 @@ namespace Practice.ViewModel
                     {
                         if (obj != null && obj.ToString().Length > 0)
                         {
-                            Console.WriteLine(obj.GetType() + " " + obj);
                             Scientists = new ObservableCollection<ScientistModel>(Scientists.OrderByDescending(i => i.ScientistFullName.Contains(obj.ToString())));
                             OnPropertyChanged("Scientists");
                         }
@@ -223,9 +234,8 @@ namespace Practice.ViewModel
                         ScientistModel scientistModel = null;
                         foreach (ScientistModel sm in e.NewItems)
                             scientistModel = sm;
-
                         ScientistService.AddScientist(scientistModel.Scientist);
-                        Console.WriteLine("Добавили элемент " + scientistModel?.ScientistName);
+
                     }
                     else if (e.Action.ToString().Equals("Remove"))
                     {
@@ -234,7 +244,6 @@ namespace Practice.ViewModel
                             scientistModel = sm;
 
                         ScientistService.RemoveScientist(scientistModel.Scientist);
-                        Console.WriteLine("Удаление элемента " + scientistModel?.ScientistName);
                     }
                     OnPropertyChanged("Scientists");
                 };

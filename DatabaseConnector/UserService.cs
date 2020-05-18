@@ -89,7 +89,7 @@ namespace DatabaseConnector
             {
                 using(ApplicationContext db = new ApplicationContext())
                 {
-                    user = (from u in db.Users where u.Login == login && u.Password == password select u).FirstOrDefault();
+                    user = (from u in db.Users where u.Login == login && u.Password == password select u).Include(u => u.Role).FirstOrDefault();
                 }
             }
             catch(Exception ex)

@@ -16,7 +16,7 @@ namespace DatabaseConnector
             {
                 using(ApplicationContext db = new ApplicationContext())
                 {
-                    scientists = (from s in db.Scientists select s).Include(s => s.Reports).ToList();
+                    scientists = (from s in db.Scientists select s).Include(s => s.Reports).Include(s => s.Country).ToList();
                 }
             }
             catch(Exception ex)
@@ -71,6 +71,7 @@ namespace DatabaseConnector
                     Scientist sci = (from s in db.Scientists where s.Id == scientist.Id select s).First();
                     sci.Name = scientist.Name;
                     sci.LastName = scientist.LastName;
+                    sci.Country = scientist.Country;
                     db.SaveChanges();
                 }
             }

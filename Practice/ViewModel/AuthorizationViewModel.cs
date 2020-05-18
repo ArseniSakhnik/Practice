@@ -50,7 +50,7 @@ namespace Practice.ViewModel
                     },
                     (obj) => Login != null && Password != null));
             }
-        } 
+        }
         private string errorString = "";
         public string ErrorString
         {

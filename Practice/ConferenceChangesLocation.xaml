@@ -11,9 +11,15 @@
             <RowDefinition Height="163*"></RowDefinition>
             <RowDefinition Height="21*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" x:Name="dataGrid" ItemsSource="{Binding Locations}" MaxWidth="500" SelectedItem="{Binding SelectedLocation}" Height="163" VerticalAlignment="Center"/>
+        <DataGrid Grid.Row="0" x:Name="dataGrid" ItemsSource="{Binding Locations}" MaxWidth="500" SelectedItem="{Binding SelectedLocation}" Height="163" VerticalAlignment="Center" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Место проведения" Binding="{Binding LocationName}"/>
+                <DataGridTextColumn Header="Описание" Binding="{Binding LocationDescription}"/>
+                <DataGridTextColumn Header="Страна" Binding="{Binding CountryName}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Grid Grid.Row="1">
-            <Button Content="Привязать страну" Margin="380,-5,10,5" Command="{Binding ChangeLocationCommand}" RenderTransformOrigin="0.5,0.5" />
+            <Button Content="Добавить место проведения" Margin="324,-5,10,5" Command="{Binding ChangeLocationCommand}" RenderTransformOrigin="0.5,0.5" />
         </Grid>
     </Grid>
 </Window>

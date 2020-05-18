@@ -34,51 +34,29 @@ namespace Practice
             InitializeComponent();
 
             User = user;
-        }
+            if (User.Role.Name != "ADMIN")
+                UserTab.Visibility = Visibility.Hidden;
 
-        private void CountryTab_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Console.WriteLine("Countries Tab открыта");
-            this.DataContext = new ApplicationCountryViewModel();
         }
 
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (CountryTab.IsSelected)
-            //    this.DataContext = new ApplicationCountryViewModel();
-
+            if (CountryTab.IsSelected && !(DataContext is ApplicationCountryViewModel))
+                DataContext = new ApplicationCountryViewModel();
+            else if (LocationTab.IsSelected && !(DataContext is ApplicationLocationViewModel))
+                DataContext = new ApplicationLocationViewModel();
+            else if (ScientistTab.IsSelected && !(DataContext is ApplicationScientistViewModel))
+                DataContext = new ApplicationScientistViewModel();
+            else if (ConferenceTab.IsSelected && !(DataContext is ApplicationConferenceViewModel))
+                DataContext = new ApplicationConferenceViewModel();
+            else if (OrganizationTab.IsSelected && !(DataContext is ApplicationOrganizationViewModel))
+                DataContext = new ApplicationOrganizationViewModel();
+            else if (UserTab.IsSelected && !(DataContext is ApplicationUserViewModel))
+                DataContext = new ApplicationUserViewModel();
+            else if (ReportTab.IsSelected && !(DataContext is ApplicationReportViewModel))
+                DataContext = new ApplicationReportViewModel();
+            else if (WordReportTab.IsSelected && !(DataContext is ApplicationWordReportViewModel))
+                DataContext = new ApplicationWordReportViewModel();
         }
-
-        private void LocationTab_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DataContext = new ApplicationLocationViewModel();
-        }
-
-        private void ScientistTab_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DataContext = new ApplicationScientistViewModel();
-        }
-
-        private void TabConference_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Console.WriteLine("Открываем конференции");
-            this.DataContext = new ApplicationConferenceViewModel();
-        }
-
-        private void TabUser_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DataContext = new ApplicationUserViewModel();
-        }
-
-        private void TabReport_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DataContext = new ApplicationReportViewModel();
-        }
-
-        private void TabOrganization_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DataContext = new ApplicationOrganizationViewModel();
-        }
-
     }
 }
