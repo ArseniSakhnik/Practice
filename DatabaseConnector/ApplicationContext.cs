@@ -24,8 +24,8 @@ namespace DatabaseConnector
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-QN9HQ65\\SQLEXPRESS;Database=practicedb;Trusted_Connection=True;");
-            //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=practicedb;Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer("Server=DESKTOP-QN9HQ65\\SQLEXPRESS;Database=practicedb;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=practicedb;Trusted_Connection=True;");
         }
         //DESKTOP-QN9HQ65\SQLEXPRESS
 
