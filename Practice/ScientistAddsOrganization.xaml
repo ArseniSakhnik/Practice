@@ -5,7 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Practice"
         mc:Ignorable="d"
-        Title="ScientistAddsOrganization" MaxHeight="215" MaxWidth="500" MinWidth="500" MinHeight="215">
+        MaxHeight="215" MaxWidth="500" MinWidth="500" MinHeight="215">
+    <Window.Resources>
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="#9e9ee4"/>
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="#7795DB"/>
+        </Style>
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="#7795DB"></Setter>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#7795DB"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#8585E4"></Setter>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="Courier New" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}"  BorderThickness="0.4" BorderBrush="Black">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#986FDF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="163*"></RowDefinition>
@@ -17,7 +50,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="1">
-            <Button Content="Добавить организацию" Command="{Binding AddOrganizationCommand}" Margin="392,1,0,0"/>
+            <Button Content="Добавить организацию" Command="{Binding AddOrganizationCommand}" Margin="294,-2,41,4"/>
         </Grid>
     </Grid>
 </Window>

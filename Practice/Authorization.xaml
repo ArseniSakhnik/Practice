@@ -5,17 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Practice"
         mc:Ignorable="d"
-        Title="Authorization" MaxWidth="200" MinWidth="260" MaxHeight="300" MinHeight="300">
+         MaxWidth="200" MinWidth="260" MaxHeight="300" MinHeight="300">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#8585E4"></Setter>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="Courier New" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}"  BorderThickness="0.4" BorderBrush="Black">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="Green"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#986FDF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="#7795DB"></Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#9e9ee4"/>
+            <Setter Property="FontFamily" Value="Courier New" />
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <StackPanel Margin="0,58,0,0" >
-            <Label Content="Авторизация" Height="26" Width="100"/>
-            <TextBlock Text="Логин"/>
-            <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" Height="23"/>
-            <TextBlock Text="Пароль"/>
+            <Label FontFamily="Courier New" Content="Авторизация" Height="26" Width="100"/>
+            <TextBlock FontFamily="Courier New" Text="Логин"/>
+            <TextBox  Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" Height="23"/>
+            <TextBlock FontFamily="Courier New" Text="Пароль"/>
             <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Height="23"/>
             <Button Content="Вход" Width="60" Command="{Binding AuthorizatonCommand}"/>
             <Label Content="{Binding ErrorString}" Foreground="Red"/>
         </StackPanel>
-
     </Grid>
 </Window>
