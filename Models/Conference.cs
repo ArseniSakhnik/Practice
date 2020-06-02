@@ -14,6 +14,7 @@ namespace Models
         public string ConferenceDescription { get; set; }
         public DateTime StartOfConference { get; set; }
         public List<ScientistConference> ScientistConference { get; set; }
+        public List<ReportConference> ReportConference { get; set; }
         public Location Location { get; set; }
 
         public Conference()

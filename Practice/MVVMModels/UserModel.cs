@@ -12,7 +12,10 @@ namespace Practice.MVVMModels
     {
         public User User { get; }
 
-        public UserModel(User user) => User = user;
+        public UserModel(User user)
+        {
+            User = user;
+        }
 
         public string UserName 
         {

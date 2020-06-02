@@ -12,7 +12,7 @@ namespace Practice.ViewModel
 {
     public class UserChangeRoleViewModel : MVVMModel
     {
-        public ObservableCollection<Role> Roles { get; set; } = new ObservableCollection<Role>();
+        public ObservableCollection<RoleModel> Roles { get; set; } = new ObservableCollection<RoleModel>();
         public Role SelectedRole { get; set; }
         public UserModel SelectedUser { get; }
 
@@ -22,9 +22,27 @@ namespace Practice.ViewModel
         {
             List<Role> roles = RoleService.GetRoles();
             foreach (Role r in roles)
-                Roles.Add(r);
+                Roles.Add(new RoleModel(r));
             this.SelectedUser = user;
             this.window = window;
+
+            Roles.CollectionChanged += (o, e) =>
+            {
+                if (e.Action.ToString().Equals("Add"))
+                {
+                    RoleModel rm = null;
+                    foreach (RoleModel rom in e.NewItems)
+                        rm = rom;
+                    UserService.AddRole(rm.Role);
+                }
+                else if (e.Action.ToString().Equals("Remove"))
+                {
+                    RoleModel rm = null;
+                    foreach (RoleModel rom in e.OldItems)
+                        rm = rom;
+                    UserService.RemoveRole(rm.Role);
+                }
+            };
         }
 
         public RelayCommand changeRoleCommand;

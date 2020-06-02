@@ -99,5 +99,98 @@ namespace DatabaseConnector
             }
             return user;
         }
+
+        public static List<Role> GetRoles()
+        {
+            List<Role> roles;
+            try
+            {
+                using(ApplicationContext db = new ApplicationContext())
+                {
+                    roles = (from r in db.Roles select r).ToList();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            return roles;
+        }
+
+        public static void ChangeRole(Role role)
+        {
+            try
+            {
+                using(ApplicationContext db = new ApplicationContext())
+                {
+                    Role ro = (from r in db.Roles where r.Id == role.Id select r).First();
+                    ro.Name = role.Name;
+                    ro.IsConfereceAvailable = role.IsConfereceAvailable;
+                    ro.IsLocalityAvailable = role.IsLocalityAvailable;
+                    ro.IsOrganizationAvailable = role.IsOrganizationAvailable;
+                    ro.IsReportsAvailable = role.IsReportsAvailable;
+                    ro.IsScientistAvailable = role.IsScientistAvailable;
+                    ro.IsUserAvialble = role.IsUserAvialble;
+                    ro.IsWordReportAvailable = role.IsWordReportAvailable;
+                    ro.IsCountryAvailable = role.IsCountryAvailable;
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public static int RoleCount()
+        {
+            int count = 0;
+            try
+            {
+                using(ApplicationContext db = new ApplicationContext())
+                {
+                    count = (from r in db.Roles select r).Count();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return count;
+        }
+
+        public static void AddRole(Role role)
+        {
+            try
+            {
+                using(ApplicationContext db = new ApplicationContext())
+                {
+                    db.Roles.Add(role);
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public static void RemoveRole(Role role)
+        {
+            try
+            {
+                using(ApplicationContext db = new ApplicationContext())
+                {
+                    Role ro = (from r in db.Roles where r.Id == role.Id select r).First();
+                    db.Roles.Remove(ro);
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

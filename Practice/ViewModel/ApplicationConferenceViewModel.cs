@@ -138,6 +138,20 @@ namespace Practice.ViewModel
                     ));
             }
         }
+        private RelayCommand removeReportCommand;
+        public RelayCommand RemoveReportCommand
+        {
+            get
+            {
+                return removeReportCommand ??
+                    (removeReportCommand = new RelayCommand(obj =>
+                    {
+                        selectedConference.Reports.Remove(selectedConference.SelectedReport);
+                    },
+                    obj => selectedConference != null && selectedConference.SelectedReport != null));
+            }
+        }
+
         public RelayCommand AddScientistCommand
         {
             get
@@ -149,6 +163,20 @@ namespace Practice.ViewModel
                         organizationAddsScientist.Show();
                     },
                     (obj) => selectedConference != null));
+            }
+        }
+
+        public RelayCommand AddReportCommand
+        {
+            get
+            {
+                return addReportCommand ??
+                    (addReportCommand = new RelayCommand(obj =>
+                    {
+                        ConferenceAddsReport conferenceAddsReport = new ConferenceAddsReport(selectedConference);
+                        conferenceAddsReport.Show();
+                    },
+                    obj => selectedConference != null));
             }
         }
 
@@ -252,7 +280,7 @@ namespace Practice.ViewModel
             }
         }
 
-
+        private RelayCommand addReportCommand;
 
     }
 }

@@ -17,6 +17,10 @@ namespace Practice.MVVMModels
 
         public ObservableCollection<ScientistModel> Scientists { get; set; } = new ObservableCollection<ScientistModel>();
 
+        public ReportModel SelectedReport { get; set; }
+
+        public ObservableCollection<ReportModel> Reports { get; set; } = new ObservableCollection<ReportModel>();
+
         public ConferenceModel(Conference conference, bool downloadEntityDates = true)
         {
             Conference = conference;
@@ -44,6 +48,29 @@ namespace Practice.MVVMModels
                         ConferenceService.RemoveScientist(Conference, sm.Scientist);
                     }
                 };
+
+                List<Report> reports = ConferenceService.GetReportsOnConference(Conference);
+                foreach (Report r in reports)
+                    Reports.Add(new ReportModel(r));
+
+                Reports.CollectionChanged += (o, e) =>
+                {
+                    if (e.Action.ToString().Equals("Add"))
+                    {
+                        ReportModel rm = null;
+                        foreach (ReportModel rtm in e.NewItems)
+                            rm = rtm;
+                        ConferenceService.AddReport(Conference, rm.Report);
+                    }
+                    else if (e.Action.ToString().Equals("Remove"))
+                    {
+                        ReportModel rm = null;
+                        foreach (ReportModel rtm in e.OldItems)
+                            rm = rtm;
+                        ConferenceService.RemoveReport(Conference, rm.Report);
+                    }
+                };
+
             }
             
         }

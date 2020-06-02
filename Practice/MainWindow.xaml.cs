@@ -33,8 +33,36 @@ namespace Practice
 
             InitializeComponent();
 
+
             User = user;
+
+
+
             if (User.Role.Name != "ADMIN")
+                UserTab.Visibility = Visibility.Hidden;
+
+            if (!User.Role.IsConfereceAvailable)
+                ConferenceTab.Visibility = Visibility.Hidden;
+
+            if (!User.Role.IsCountryAvailable)
+                CountryTab.Visibility = Visibility.Hidden;
+
+            if (!User.Role.IsLocalityAvailable)
+                LocationTab.Visibility = Visibility.Hidden;
+
+            if (!User.Role.IsOrganizationAvailable)
+                OrganizationTab.Visibility = Visibility.Hidden;
+
+            if (!User.Role.IsReportsAvailable)
+                ReportTab.Visibility = Visibility.Hidden;
+
+            if (!User.Role.IsScientistAvailable)
+                ScientistTab.Visibility = Visibility.Hidden;
+
+            if (!User.Role.IsWordReportAvailable)
+                WordReportTab.Visibility = Visibility.Hidden;
+
+            if (!User.Role.IsUserAvialble)
                 UserTab.Visibility = Visibility.Hidden;
 
         }

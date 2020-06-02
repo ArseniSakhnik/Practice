@@ -15,6 +15,7 @@ namespace Models
         public string Text { get; set; }
         public DateTime ReportDate { get; set; }
         public bool IsPublished { get; set; } = false;
+        public List<ReportConference> ReportConference { get; set; }
 
     }
 }

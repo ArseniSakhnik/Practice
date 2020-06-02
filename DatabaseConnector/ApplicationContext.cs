@@ -55,6 +55,18 @@ namespace DatabaseConnector
                 .WithMany(s => s.ScientistOrganization)
                 .HasForeignKey(sc => sc.OrganizationId);
 
+            modelBuilder.Entity<ReportConference>().HasKey(rc => new { rc.ReportId, rc.ConferenceId });
+
+            modelBuilder.Entity<ReportConference>()
+                .HasOne(rc => rc.Report)
+                .WithMany(rc => rc.ReportConference)
+                .HasForeignKey(rc => rc.ReportId);
+
+            modelBuilder.Entity<ReportConference>()
+                .HasOne(rc => rc.Conference)
+                .WithMany(c => c.ReportConference)
+                .HasForeignKey(rc => rc.ConferenceId);
+
             modelBuilder.Entity<Role>()
                 .HasIndex(u => u.Name)
                 .IsUnique();
@@ -76,8 +88,8 @@ namespace DatabaseConnector
                 .IsUnique();
 
             modelBuilder.Entity<Role>().HasData(
-                new Role() { Id = 1, Name = "ADMIN" },
-                new Role() { Id = 2, Name = "USER" }
+                new Role() { Id = 1, Name = "ADMIN", IsReportsAvailable = true, IsOrganizationAvailable = true, IsConfereceAvailable = true, IsScientistAvailable = true, IsLocalityAvailable = true, IsUserAvialble = true, IsWordReportAvailable = true, IsCountryAvailable = true },
+                new Role() { Id = 2, Name = "USER", IsReportsAvailable = true, IsOrganizationAvailable = true, IsConfereceAvailable = true, IsScientistAvailable = true, IsLocalityAvailable = true, IsUserAvialble = false, IsWordReportAvailable = true, IsCountryAvailable = true }
                 );
 
             modelBuilder.Entity<User>().HasData(
@@ -129,11 +141,13 @@ namespace DatabaseConnector
                 new { ScientistId = 2, OrganizationId = 2}
                 );
 
-
+            modelBuilder.Entity<ReportConference>().HasData(
+                new { ReportId = 1, ConferenceId = 1 },
+                new { ReportId = 2, ConferenceId = 2 }
+                );
 
             base.OnModelCreating(modelBuilder);
         }
-
 
     }
 }

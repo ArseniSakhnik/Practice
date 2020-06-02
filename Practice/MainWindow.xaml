@@ -146,8 +146,9 @@
             <TabItem Header="Конференции" Name="ConferenceTab">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="0.8*" />
+                        <ColumnDefinition Width="431*" />
+                        <ColumnDefinition Width="133*" />
+                        <ColumnDefinition Width="212*"/>
                     </Grid.ColumnDefinitions>
                     <CheckBox IsChecked="{Binding IsPublished}"/>
                     <TextBox x:Name="ConferenceFinder" Text="">
@@ -168,7 +169,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <StackPanel Grid.Column="1" DataContext="{Binding SelectedConference}">
+                    <StackPanel DataContext="{Binding SelectedConference}" Grid.ColumnSpan="3" Margin="431,0,0,0">
                         <TextBlock Text="Выбранный элемент"  />
                         <TextBlock Text="Название конференции" />
                         <TextBox Text="{Binding ConferenceName, UpdateSourceTrigger=PropertyChanged}" />
@@ -182,7 +183,7 @@
 
                         <TextBlock Text="Ученые, участвующие в конференции"/>
 
-                        <ListBox ItemsSource="{Binding Scientists}" Height="100" SelectedItem="{Binding SelectedScientist}">
+                        <ListBox ItemsSource="{Binding Scientists}" Height="65" SelectedItem="{Binding SelectedScientist}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="5">
@@ -191,26 +192,45 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+
+                        <TextBlock Text="Доклады конференции"/>
+                        <ListBox ItemsSource="{Binding Reports}" Height="65" SelectedItem="{Binding SelectedReport}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="5">
+                                        <TextBlock Text="{Binding ReportName}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
                     </StackPanel>
 
-                    <StackPanel Margin="236,79,0,273" Grid.Column="1">
+
+                    <StackPanel Margin="103,79,0,273" Grid.Column="2">
                         <Button Content="Изменить" Width="110" Command="{Binding DatePickerCommand}" Height="15"/>
                     </StackPanel>
 
-                    <StackPanel Margin="305,133,-10,180" Grid.Column="1">
+
+                    <StackPanel Margin="172,210,-10,135" Grid.Column="2">
+                        <Button Content="+" Width="30" Command="{Binding AddReportCommand}" />
+                        <Button Content="-" Width="30" Command="{Binding RemoveReportCommand}"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="172,133,-10,193" Grid.Column="2">
                         <Button Content="+" Width="30" Command="{Binding AddScientistCommand}" />
                         <Button Content="-" Width="30" Command="{Binding RemoveScientistCommand}"/>
                     </StackPanel>
 
-                    <StackPanel Margin="276,106,0,238" Grid.Column="1">
+                    <StackPanel Margin="143,106,0,238" Grid.Column="2">
                         <Button Content="Изменить" Height="14" Command="{Binding ChangeLocationCommand}"/>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Margin="431,267,0,7" Grid.ColumnSpan="2">
+                    <StackPanel Orientation="Vertical" Margin="431,267,0,7" Grid.ColumnSpan="3">
                         <Button x:Name="ConferenceAdd" Content="Добавить запись" Command="{Binding AddConferenceCommand}" Width="110"/>
                         <Button x:Name="ConferenceDelete" Content="Удалить" Command="{Binding RemoveConferenceCommand}" CommandParameter="{Binding SelectedConference}" Width="110"/>
                         <!--<Button x:Name="ConferenceAddCountry" Content="Добавить или изменить страну" Width="180" Command="{Binding ScientistAddCountry}"/>-->
-                        <Label Content="Конференции, без опубликованных  материалов" Width="292" Margin="0,0, 66, 0"/>
+                        <Label Content="Конференции, без опубликованных  материалов" Width="292" Margin="0,0, 66, 0" Height="30"/>
                         <CheckBox IsChecked="False" Command="{Binding ConferencesWithoutPublishedMaterialsCommand}" CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Width="16" Margin="250,-20,0,0" RenderTransformOrigin="1.518,0.51"/>
                         <Label Content="Сортировать по количеству ученых" Width="282" Margin="0,0, 66, 0"/>
                         <CheckBox IsChecked="False" Command="{Binding SortByScientistCommand}" CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Width="16" Margin="250,-20,0,0"/>
@@ -399,19 +419,20 @@
                 </Grid>
 
             </TabItem>
-            <TabItem Header="Пользователи" Name="UserTab">
+            <TabItem Header="Пользователи" Name="UserTab" HorizontalAlignment="Left" Width="95">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="0.8*" />
+                        <ColumnDefinition Width="284*" />
+                        <ColumnDefinition Width="147*"/>
+                        <ColumnDefinition Width="345*" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="UserFinder" Text="" >
+                    <TextBox x:Name="UserFinder" Text="" Grid.ColumnSpan="2" >
                         <TextBox.InputBindings>
                             <KeyBinding Command="{Binding Path=FindUserCommand}" CommandParameter="{Binding Text, ElementName=UserFinder}" Key="Enter"/>
                         </TextBox.InputBindings>
                     </TextBox>
                     <ListBox Grid.Column="0" ItemsSource="{Binding Users}"
-                 SelectedItem="{Binding SelectedUser}" Margin="0,20,0,0">
+                 SelectedItem="{Binding SelectedUser}" Margin="0,20,0,0" Grid.ColumnSpan="2">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="5">
@@ -423,7 +444,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <StackPanel Grid.Column="1" DataContext="{Binding SelectedUser}">
+                    <StackPanel Grid.Column="1" DataContext="{Binding SelectedUser}" Grid.ColumnSpan="2" Margin="147,0,0,0">
                         <TextBlock Text="Выбранный элемент"  />
                         <TextBlock Text="Имя пользователя" />
                         <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" />
@@ -434,7 +455,7 @@
                         <TextBlock Text="Роль"/>
                         <TextBox Text="{Binding RoleName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="431,177,0,138" Grid.ColumnSpan="2">
+                    <StackPanel Orientation="Vertical" Margin="147,249,0,80" Grid.ColumnSpan="2" Grid.Column="1">
                         <Button x:Name="UserAdd" Content="Добавить запись" Command="{Binding AddConferenceCommand}" Width="110"/>
                         <Button x:Name="UserDelete" Content="Удалить" Command="{Binding RemoveConferenceCommand}" CommandParameter="{Binding SelectedConference}" Width="110"/>
                         <Button Content="Изменить роль" Command="{Binding ChangeRoleCommand}" Width="110"/>
